@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsdev.gzh.dao">
+
+    <select id="tbQuery" resultType="Map" parameterType="Map">
+        SELECT
+        q.id as id,
+        q.selec_id as selecid,
+        q.tb_id as tbid,
+        q.paper_title as papertitle,
+        q.paper_author as paperauthor,
+        q.paper_time as papertime,
+        q.paper_status as paperstatus,
+        q.paper_path as paperpath,
+        q.addtime as addtime,
+        q.updtime as updtime,
+        q.operator as operator
+        FROM
+        query_history q
+        WHERE
+        1 = 1
+            and q.tb_id = #{tbid}
+        <if test="pagingOrNot != null and pagingOrNot != ''">
+            LIMIT #{startindex},#{pagesize};
+        </if>
+    </select>
+
+    <insert id="addhistory" parameterType="Map">
+        INSERT INTO
+            query_history (
+            id
+            ,selec_id
+            ,tb_id
+            ,paper_title
+            ,paper_author
+            ,paper_time
+            ,paper_status
+            ,paper_path
+            ,addtime
+            ,updtime
+            ,operator
+            )
+		VALUES
+		    ( #{id}
+		    , #{selecid}
+		    ,#{tbid}
+		    ,#{papertitle}
+		    ,#{paperauthor}
+		    ,#{papertime}
+		    ,#{paperstatus}
+		    ,#{paperpath}
+		    ,#{addTime}
+		    ,#{updTime}
+		    ,#{operator}
+		    );
+    </insert>
+
+    <delete id="delhistory" parameterType="Map">
+        DELETE FROM query_history WHERE id = #{id}
+    </delete>
+</mapper>
