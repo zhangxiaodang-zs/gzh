@@ -1,10 +1,7 @@
-package com.zsdev.gzh.controller;
+package com.zsdev.gzh.weixinselect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.zsdev.gzh.webservice.WsdService;
-import com.zsdev.gzh.weixinselect.PaperRequest;
-import com.zsdev.gzh.weixinselect.WebRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -19,17 +16,17 @@ import javax.servlet.http.HttpServletResponse;
  * Copyright(C) ShanDongzhisheng 2019.
  * <p>
  *
- * @author 张孝党 2019/03/28.
+ * @author 门海峰 20200327.
  * @version V0.0.2.
  * <p>
  * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Slf4j
 @RestController
-public class WsdController {
+public class WxSelectController {
 
     @Autowired
-    private WsdService wsdService;
+    private WxSelectService wsdService;
 
     private String appID = "wxf7fe4ee1579d1e63";
     private String appSecret = "541aae9e7ccc8809f2931e923836f246";

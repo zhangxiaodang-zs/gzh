@@ -1,14 +1,13 @@
 package com.zsdev.gzh.util;
 
 /**
- * Copyright(C) ShanDongYinFang 2018.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * 字符串格式化类.
  *
- * @author 张孝党 2018/07/24.
- * @version V1.00.
+ * @author 门海峰 20200327.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V1.00 2018/07/24 张孝党 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 public class StringFormat {
 

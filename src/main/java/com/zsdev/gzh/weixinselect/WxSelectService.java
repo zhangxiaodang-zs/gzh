@@ -1,15 +1,13 @@
-package com.zsdev.gzh.webservice;
+package com.zsdev.gzh.weixinselect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.zsdev.gzh.GzhApplication;
-import com.zsdev.gzh.dao.WsdDao;
 import com.zsdev.gzh.util.CommonUtil;
 import com.zsdev.gzh.util.HttpUtil;
 import com.zsdev.gzh.util.StringFormat;
+import com.zsdev.gzh.webservice.*;
 import com.zsdev.gzh.weixin.WeixinConstant;
-import com.zsdev.gzh.weixinselect.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,20 +21,17 @@ import java.util.Map;
  * Copyright(C) ShanDongzhisheng 2019.
  * <p>
  *
- * @author 张孝党 2019/03/28.
+ * @author 门海峰 20200327.
  * @version V0.0.2.
  * <p>
  * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Slf4j
 @Service
-public class WsdService {
+public class WxSelectService {
 
     @Autowired
-    private WsdDao wsdDao;
-
-    @Autowired
-    private GzhApplication azhApplication;
+    private WxSelectDao wsdDao;
 
     private String tbid = "";
     /**
@@ -64,6 +59,9 @@ public class WsdService {
         return openid;
     }
 
+    /**
+     * 查询
+     * */
     public String queryPaperHistory(WebRequest<PaperRequest> requestData) {
 
         HashMap map = SdyfJsonUtil.beanToMap(requestData.getRequest());
@@ -81,10 +79,9 @@ public class WsdService {
         map.put("tbid",tbid);
         List<Map<String, Object>> lstData = this.wsdDao.tbQuery(map);
         if(lstData.size() <= 0 || null == lstData){
-            //没有
+            //本地没有
             // 系统时间戳
             String spam = Long.toString(System.currentTimeMillis()/1000L);
-
             // 获取访问token
             String token = PtUtil.getPtToken(spam);
             log.info("token为:{}", token);
@@ -105,8 +102,6 @@ public class WsdService {
 //            有
             paperResponse.setPaperlist(lstData);
         }
-
-
         paperResponse.setDraw(requestData.getRequest().getDraw());
 
         web.setResponse(paperResponse);
@@ -114,6 +109,9 @@ public class WsdService {
         return JSONObject.toJSON(web).toString();
     }
 
+    /**
+     * 添加
+     * */
     @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
     public String addHistory(String res) {
@@ -125,15 +123,23 @@ public class WsdService {
         map.put("selecid", CommonUtil.getUUid());
         map.put("addTime", Long.toString(System.currentTimeMillis()/1000L));
         map.put("updTime",Long.toString(System.currentTimeMillis()/1000L));
-        if(null != objects.get("url")){
+        if(null != objects.get("url") && !"".equals(objects.get("url"))){
             map.put("paperpath", objects.get("url"));
         }
+        if(null != objects.get("title") && !"".equals(objects.get("title"))){
+            map.put("paperpath", objects.get("title"));
+        }
+        if(null != objects.get("author") && !"".equals(objects.get("author"))){
+            map.put("paperpath", objects.get("author"));
+        }
+        if(null != objects.get("time") && !"".equals(objects.get("time"))){
+            map.put("paperpath", objects.get("time"));
+        }
+        if(null != objects.get("status") && !"".equals(objects.get("status"))){
+            map.put("paperpath", objects.get("status"));
+        }
         map.put("selecid", CommonUtil.getUUid());
-        map.put("papertitle", objects.get("title"));
         map.put("tbid", tbid);
-        map.put("paperauthor", objects.get("author"));
-        map.put("papertime", objects.get("time"));
-        map.put("paperstatus", objects.get("status"));
         int ress = this.wsdDao.addhistory(map);
 
 

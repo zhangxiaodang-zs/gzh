@@ -3,14 +3,13 @@ package com.zsdev.gzh.weixinselect;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * 系统正常返回信息.
  *
- * @author 张孝党 2019/08/27.
- * @version V1.00.
+ * @author 门海峰 20200327.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V1.00 2019/08/27 张孝党 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 
 public class SysResponse {

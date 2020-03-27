@@ -1,14 +1,13 @@
 package com.zsdev.gzh.weixinselect;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * WEB端请求报文.
  *
- * @author 张孝党 2019/08/27.
- * @version V0.0.1.
+ * @author 门海峰 20200327.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V0.0.1 2019/08/27 张孝党 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 public class WebRequest<T> extends SysRequest<T> {
 

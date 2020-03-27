@@ -1,14 +1,13 @@
 package com.zsdev.gzh.weixinselect;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * WEB端机构信息请求报文.
  *
- * @author 门海峰 2020/03/17.
- * @version V0.0.1.
+ * @author 门海峰 20200327.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V0.0.1 2020/03/17 门海峰 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 public class PaperRequest {
 
