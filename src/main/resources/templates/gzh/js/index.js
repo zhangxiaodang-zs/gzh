@@ -78,7 +78,7 @@ $("#search").click(function () {
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
         // url: userRightUrl + "useredit",    //请求发送到TestServlet处
         url: "http://192.168.10.14:9000/gzh/java/wxselect",    //请求发送到TestServlet处
-        data: JSON.stringify(data),
+        data: data,
         dataType: "json",        //返回数据形式为json
         success: function (result) {
             console.info("result:" + JSON.stringify(result));

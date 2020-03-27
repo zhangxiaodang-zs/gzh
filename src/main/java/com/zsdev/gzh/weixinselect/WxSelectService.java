@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,20 +62,21 @@ public class WxSelectService {
 
     /**
      * 查询
-     * */
-    public String queryPaperHistory(WebRequest<PaperRequest> requestData) {
+     *
+     * @param requestData*/
+    public String queryPaperHistory(HttpServletRequest requestData) {
 
-        HashMap map = SdyfJsonUtil.beanToMap(requestData.getRequest());
-        if (requestData.getRequest().getStartindex() != null && !"".equals(requestData.getRequest().getStartindex()) && requestData.getRequest().getPagesize() != null && !"".equals(requestData.getRequest().getPagesize())) {
+        HashMap map = SdyfJsonUtil.beanToMap("");
+        if (requestData.getParameter("tartindex") != null && !"".equals(requestData.getParameter("tartindex")) && requestData.getParameter("pagesize") != null && !"".equals(requestData.getParameter("pagesize"))) {
             //为防止分页查询出错，把这俩个属性强转为int类型
-            map.put("startindex", Integer.parseInt(requestData.getRequest().getStartindex()));
-            map.put("pagesize", Integer.parseInt(requestData.getRequest().getPagesize()));
+            map.put("startindex", Integer.parseInt(requestData.getParameter("tartindex")));
+            map.put("pagesize", Integer.parseInt(requestData.getParameter("tartindex")));
             map.put("pagingOrNot", "1");
         }
         //创建接收对象
         WebResponse<PaperResponse> web = new WebResponse<>();
         PaperResponse paperResponse = new PaperResponse();
-        tbid = requestData.getRequest().getTbid();
+        tbid = requestData.getParameter("tbid").toString();
         //查询这个订单号有没有被查询过
         map.put("tbid",tbid);
         List<Map<String, Object>> lstData = this.wsdDao.tbQuery(map);
@@ -90,7 +92,7 @@ public class WxSelectService {
             WeixinApiService weixinApiService = new WeixinApiService();
             WeixinApiServiceSoap weixinApiServiceSoap = weixinApiService.getWeixinApiServiceSoap();
             String queryResult = weixinApiServiceSoap.queryPaperReport(PtConstant.APP_KEY, token, spam,
-                    requestData.getRequest().getTbid(),
+                    tbid,
                     "ZW");
             if(!"".equals(queryResult)){
                 this.addHistory(queryResult);
@@ -102,8 +104,6 @@ public class WxSelectService {
 //            有
             paperResponse.setPaperlist(lstData);
         }
-        paperResponse.setDraw(requestData.getRequest().getDraw());
-
         web.setResponse(paperResponse);
 
         return JSONObject.toJSON(web).toString();
