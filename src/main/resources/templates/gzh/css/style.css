@@ -134,7 +134,7 @@ input:focus{
     color: #fff !important;
     border-radius: 0.2rem;
 }
-
+.btn1 a,.btn2 a{color: #fff}
 .btn2{
     text-align: center;
     width: 1.64rem;

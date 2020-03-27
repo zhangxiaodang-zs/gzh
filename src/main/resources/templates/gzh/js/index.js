@@ -4,44 +4,98 @@ $(document).ready(function(){
 
 /*————————————查询报告接口————————————————*/
 var IP_url="http://192.168.10.14:9000/";
-$("#search").click(function () {
+$("#search").click(function (e) {
+    e.preventDefault();
     var tbid=$("#order_number").val();//获取输入框值
     var data={"tbid":tbid};
     console.log(data);
     $.ajax({
         type: "post",
-        contentType: "application/json",
         async: true, //异步请求
         url: IP_url+"gzh/java/wxselect",
         data: data,
         dataType: "json",
         success: function (result) {
-            console.log("成功")
-            console.log(result)
-            $(".report_list ul").append(
-                ' <li class="clearfix">'+
-                '  <div class="pull-left list_l">论文标题</div>'+
-                '<div class="pull-left list_r">从语素教学角度浅谈对韩汉语词汇 教学</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '  <div class="pull-left list_l">论文作者</div>'+
-                '<div class="pull-left list_r">母丹丹</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '<div class="pull-left list_l">检测时间</div>'+
-                '<div class="pull-left list_r">2020-2-26 11:21:39</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '<div class="pull-left list_l">检测状态</div>'+
-                '<div class="pull-left list_r">检测完成</div>'+
-                ' </li>'
-            )
+            $(".report_list ul").html('');
+            var paperlist=result.response.paperlist;
+            if(paperlist){
+                for (var i = 0; i <paperlist.length; i++){
+                    $(".report_list ul").append(
+                        ' <li class="clearfix">'+
+                        '  <div class="pull-left list_l">论文标题</div>'+
+                        '<div class="pull-left list_r">'+paperlist[i].title+'</div>'+
+                        ' </li>'+
+                        ' <li class="clearfix">'+
+                        '  <div class="pull-left list_l">论文作者</div>'+
+                        '<div class="pull-left list_r">'+paperlist[i].author+'</div>'+
+                        ' </li>'+
+                        ' <li class="clearfix">'+
+                        '<div class="pull-left list_l">检测时间</div>'+
+                        '<div class="pull-left list_r">'+paperlist[i].time+'</div>'+
+                        ' </li>'+
+                        ' <li class="clearfix">'+
+                        '<div class="pull-left list_l">检测状态</div>'+
+                        '<div class="pull-left list_r">'+paperlist[i].status+'</div>'+
+                        ' </li>'+
+                        ' <li class="clearfix">'+
+                        ' <div class="pull-left list_l">操作</div>'+
+                        ' <div class="pull-left" style="margin-left: 1.2rem">'+
+                        ' <div class="btn1 pull-left">' +
+                        '<a href="'+paperlist[i].url+'">下载报告</a>'+
+                       // '<a href="'+((paperlist[i].url!=null)?(paperlist[i].url):("#"))+'">下载报告</a>'+
+                        '</div>'+
+                        '<div class="btn2 pull-left" data-id="'+paperlist[i].tbid+'">删除报告</div>'+
+                        '</div>'+
+                        ' </li>'
+                    )
+                }
+            }
+
         },
         error: function (errorMsg) {
             console.log("未成功"+JSON.stringify(errorMsg))
         }
     });
 })
+
+
+//删除报告
+$('.report_list ul').on('click', '.btn2', function (e) {
+    e.preventDefault();
+    var data={"tbid":$(this).attr('data-id')};
+    console.log(data)
+    $.ajax({
+        type: "post",
+        async: true, //异步请求
+        url: IP_url+"gzh/java/delhistory",
+        data: data,
+        dataType: "json",
+        success: function (result) {
+            alert("删除成功");
+            window.location.reload();
+        },
+        error: function (errorMsg) {
+
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // if(isWeiXin()){
 //     console.log(" 来自微信内置浏览器");
