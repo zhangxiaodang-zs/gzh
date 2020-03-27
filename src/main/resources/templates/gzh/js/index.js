@@ -1,8 +1,47 @@
 $(document).ready(function(){
-    // isWeiXin();
-  //  getBaseInfos();
 });
 
+
+/*————————————查询报告接口————————————————*/
+var IP_url="http://192.168.10.14:9000/";
+$("#search").click(function () {
+    var tbid=$("#order_number").val();//获取输入框值
+    var data={"tbid":tbid};
+    console.log(data);
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true, //异步请求
+        url: IP_url+"gzh/java/wxselect",
+        data: data,
+        dataType: "json",
+        success: function (result) {
+            console.log("成功")
+            console.log(result)
+            $(".report_list ul").append(
+                ' <li class="clearfix">'+
+                '  <div class="pull-left list_l">论文标题</div>'+
+                '<div class="pull-left list_r">从语素教学角度浅谈对韩汉语词汇 教学</div>'+
+                ' </li>'+
+                ' <li class="clearfix">'+
+                '  <div class="pull-left list_l">论文作者</div>'+
+                '<div class="pull-left list_r">母丹丹</div>'+
+                ' </li>'+
+                ' <li class="clearfix">'+
+                '<div class="pull-left list_l">检测时间</div>'+
+                '<div class="pull-left list_r">2020-2-26 11:21:39</div>'+
+                ' </li>'+
+                ' <li class="clearfix">'+
+                '<div class="pull-left list_l">检测状态</div>'+
+                '<div class="pull-left list_r">检测完成</div>'+
+                ' </li>'
+            )
+        },
+        error: function (errorMsg) {
+            console.log("未成功"+JSON.stringify(errorMsg))
+        }
+    });
+})
 
 // if(isWeiXin()){
 //     console.log(" 来自微信内置浏览器");
@@ -68,56 +107,12 @@ state 非必须 参数 返回时会是 state=XXXXXXXXX
 // }
 
 
-/*————————————查询报告接口————————————————*/
-$("#search").click(function () {
-    console.log($("#order_number").val())
-    var data={"tbid":$("#order_number").val()};
-    console.log(JSON.stringify(data));
-    $.ajax({
-        type: "post",
-        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        // url: userRightUrl + "useredit",    //请求发送到TestServlet处
-        url: "http://192.168.10.14:9000/gzh/java/wxselect",    //请求发送到TestServlet处
-        data: data,
-        dataType: "json",        //返回数据形式为json
-        success: function (result) {
-            console.info("result:" + JSON.stringify(result));
-            $(".report_list ul").append(
-                ' <li class="clearfix">'+
-                '  <div class="pull-left list_l">论文标题</div>'+
-                '<div class="pull-left list_r">从语素教学角度浅谈对韩汉语词汇 教学</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '  <div class="pull-left list_l">论文作者</div>'+
-                '<div class="pull-left list_r">母丹丹</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '<div class="pull-left list_l">检测时间</div>'+
-                '<div class="pull-left list_r">2020-2-26 11:21:39</div>'+
-                ' </li>'+
-                ' <li class="clearfix">'+
-                '<div class="pull-left list_l">检测状态</div>'+
-                '<div class="pull-left list_r">检测完成</div>'+
-                ' </li>'
-            )
-        },
-        error: function (errorMsg) {
-
-        }
-    });
-})
-
-
-
-
-
-
 //获取url参数
-function getUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]); return null;
-}
+// function getUrlParam(name) {
+//     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+//     var r = window.location.search.substr(1).match(reg);
+//     if (r != null) return unescape(r[2]); return null;
+// }
 
 
 
