@@ -41,3 +41,28 @@ function juery_list() {
     });
 }
 
+// 分页开始
+layui.use(['laypage'], function(){
+  //  totalcount = localStorage.getItem('totalcount');
+    var laypage = layui.laypage;
+    //执行一个laypage实例
+    laypage.render({
+        elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+       // ,count:  totalcount //数据总数，从服务端得到
+        ,count:  10
+        //,limit:pagesize //每页显示的条数。laypage将会借助 count 和 limit 计算出分页数
+        ,limit:5
+        ,theme: '#a1cf40'
+        ,prev: false
+        ,next: '<em>→</em>'
+        ,jump: function(obj){
+            //console.log("当前页："+obj.curr)//得到当前页
+            //console.log("每页显示："+obj.limit+" 条");//每页显示的条数
+          //  var curr=obj.curr-1;
+           // NewsList(typeid,curr,pagesize)
+
+        }
+
+    });
+});
+
