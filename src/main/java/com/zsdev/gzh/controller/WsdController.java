@@ -2,9 +2,9 @@ package com.zsdev.gzh.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.zsdev.gzh.webservice.PaperRequest;
-import com.zsdev.gzh.webservice.WebRequest;
 import com.zsdev.gzh.webservice.WsdService;
+import com.zsdev.gzh.weixinselect.PaperRequest;
+import com.zsdev.gzh.weixinselect.WebRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -16,15 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * 银方易网通网商贷Controller.
  *
  * @author 张孝党 2019/03/28.
  * @version V0.0.2.
  * <p>
- * 更新履历： V0.0.1 2019/03/28 张孝党 创建.
- * V0.0.2 2019/04/22 张孝党 方法【index】增加打印请求方IP.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Slf4j
 @RestController
@@ -61,16 +59,16 @@ public class WsdController {
         return wsdService.queryPaperHistory(paperRequest);
     }
 
-    /**
-     * 增加
-     * */
-    @RequestMapping("/addhistory")
-    public String addhistory(@RequestBody String requestData, HttpServletResponse response) throws Exception {
-        WebRequest<PaperRequest> paperRequest = JSON.parseObject(requestData, new TypeReference<WebRequest<PaperRequest>>() {
-        });
-        log.info("web项目添加---------->传入的参数为：{}", requestData);
-        return wsdService.addHistory(paperRequest);
-    }
+//    /**
+//     * 增加
+//     * */
+//    @RequestMapping("/addhistory")
+//    public String addhistory(@RequestBody String requestData, HttpServletResponse response) throws Exception {
+//        WebRequest<PaperRequest> paperRequest = JSON.parseObject(requestData, new TypeReference<WebRequest<PaperRequest>>() {
+//        });
+//        log.info("web项目添加---------->传入的参数为：{}", requestData);
+//        return wsdService.addHistory(paperRequest);
+//    }
 
     /**
      * 删除

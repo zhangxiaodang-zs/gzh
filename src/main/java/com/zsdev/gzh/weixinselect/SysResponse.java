@@ -1,4 +1,4 @@
-package com.zsdev.gzh.webservice;
+package com.zsdev.gzh.weixinselect;
 
 import com.alibaba.fastjson.JSONObject;
 

@@ -1,12 +1,15 @@
 package com.zsdev.gzh.webservice;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.zsdev.gzh.GzhApplication;
 import com.zsdev.gzh.dao.WsdDao;
 import com.zsdev.gzh.util.CommonUtil;
 import com.zsdev.gzh.util.HttpUtil;
 import com.zsdev.gzh.util.StringFormat;
 import com.zsdev.gzh.weixin.WeixinConstant;
+import com.zsdev.gzh.weixinselect.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * 庆云网贷Service.
  *
  * @author 张孝党 2019/03/28.
- * @version V0.0.1.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V0.0.1 2019/03/28 张孝党 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Slf4j
 @Service
@@ -33,7 +35,10 @@ public class WsdService {
     @Autowired
     private WsdDao wsdDao;
 
+    @Autowired
+    private GzhApplication azhApplication;
 
+    private String tbid = "";
     /**
      * 获取用户openid.
      */
@@ -68,44 +73,71 @@ public class WsdService {
             map.put("pagesize", Integer.parseInt(requestData.getRequest().getPagesize()));
             map.put("pagingOrNot", "1");
         }
-        //查询这个订单号有没有被查询过
-        map.put("tbid",requestData.getRequest().getTbid());
-        List<Map<String, Object>> lstData = this.wsdDao.tbQuery(map);
-//        if(lstData.size()<0 || null == lstData){
-//            //没有
-//        }
         //创建接收对象
         WebResponse<PaperResponse> web = new WebResponse<>();
         PaperResponse paperResponse = new PaperResponse();
+        tbid = requestData.getRequest().getTbid();
+        //查询这个订单号有没有被查询过
+        map.put("tbid",tbid);
+        List<Map<String, Object>> lstData = this.wsdDao.tbQuery(map);
+        if(lstData.size() <= 0 || null == lstData){
+            //没有
+            // 系统时间戳
+            String spam = Long.toString(System.currentTimeMillis()/1000L);
+
+            // 获取访问token
+            String token = PtUtil.getPtToken(spam);
+            log.info("token为:{}", token);
+
+            // 调用查询接口
+            WeixinApiService weixinApiService = new WeixinApiService();
+            WeixinApiServiceSoap weixinApiServiceSoap = weixinApiService.getWeixinApiServiceSoap();
+            String queryResult = weixinApiServiceSoap.queryPaperReport(PtConstant.APP_KEY, token, spam,
+                    requestData.getRequest().getTbid(),
+                    "ZW");
+            if(!"".equals(queryResult)){
+                this.addHistory(queryResult);
+            }else {
+                return new SysErrResponse("订单号不存在").toJsonString();
+            }
+            paperResponse.setPaperlist(queryResult);
+        }else{
+//            有
+            paperResponse.setPaperlist(lstData);
+        }
+
 
         paperResponse.setDraw(requestData.getRequest().getDraw());
-        paperResponse.setPaperlist(lstData);
+
         web.setResponse(paperResponse);
 
-        return JSONObject.toJSON(lstData).toString();
+        return JSONObject.toJSON(web).toString();
     }
 
     @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-    public String addHistory(WebRequest<PaperRequest> requestData) {
+    public String addHistory(String res) {
+        JSONObject object = JSON.parseObject(res);
+        JSONObject objects = JSON.parseObject(String.valueOf(object.get("data")));
         //对象转换成map集合 并给dao传值
         HashMap map = SdyfJsonUtil.beanToMap("");
         map.put("id", CommonUtil.getUUid());
         map.put("selecid", CommonUtil.getUUid());
-        map.put("addtime", Long.toString(System.currentTimeMillis()/1000L));
-        map.put("updtime",Long.toString(System.currentTimeMillis()/1000L));
+        map.put("addTime", Long.toString(System.currentTimeMillis()/1000L));
+        map.put("updTime",Long.toString(System.currentTimeMillis()/1000L));
+        if(null != objects.get("url")){
+            map.put("paperpath", objects.get("url"));
+        }
+        map.put("selecid", CommonUtil.getUUid());
+        map.put("papertitle", objects.get("title"));
+        map.put("tbid", tbid);
+        map.put("paperauthor", objects.get("author"));
+        map.put("papertime", objects.get("time"));
+        map.put("paperstatus", objects.get("status"));
+        int ress = this.wsdDao.addhistory(map);
 
-        map.put("operator",requestData.getRequest().getOperator());
-        map.put("tbid",requestData.getRequest().getTbid());
-        map.put("papertitle",requestData.getRequest().getPapertitle());
-        map.put("paperauthor",requestData.getRequest().getPaperauthor());
-        map.put("papertime",requestData.getRequest().getPapertime());
-        map.put("paperstatus",requestData.getRequest().getPaperstatus());
-        map.put("paperpath",requestData.getRequest().getPaperpath());
-        int res = this.wsdDao.addhistory(map);
 
-
-        if(res<=0){
+        if(ress <= 0){
             return new SysErrResponse("添加失败！").toJsonString();
         }
 

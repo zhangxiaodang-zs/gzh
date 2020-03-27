@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Copyright(C) ShanDongYinFang 2019.
+ * Copyright(C) ShanDongzhisheng 2019.
  * <p>
- * 银方易网通网商贷Dao.
  *
- * @author 张孝党 2019/04/15.
- * @version V0.0.1.
+ * @author 张孝党 2019/03/28.
+ * @version V0.0.2.
  * <p>
- * 更新履历： V0.0.1 2019/04/15 张孝党 创建.
+ * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Mapper
 @Repository

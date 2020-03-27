@@ -1,6 +1,4 @@
-package com.zsdev.gzh.webservice;
-
-import java.util.List;
+package com.zsdev.gzh.weixinselect;
 
 /**
  * Copyright(C) ShanDongYinFang 2019.
