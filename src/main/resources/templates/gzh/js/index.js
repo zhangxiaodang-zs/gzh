@@ -38,8 +38,9 @@ scope 必须 应用授权作用域 后面详细讲解
 state 非必须 参数 返回时会是 state=XXXXXXXXX
 #wechat_redirect 必须 无论直接打开还是做页面302重定向时候，必须带此参数*/
 var WX_APPID="";
+var WX_url="http://123.232.236.210:9000/gzh/java/wxcxindex";
 function getBaseInfos(){
-    var url_code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+WX_APPID+"&redirect_uri="+当前页面url+"&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect";
+    var url_code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+WX_APPID+"&redirect_uri="+WX_url+"&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect";
     window.location.href = url_code;//打开这个链接，你的url后面就会跟上code的参数
     var get_code = getUrlParam("code");
     localStorage.setItem("code", get_code);//储存code
