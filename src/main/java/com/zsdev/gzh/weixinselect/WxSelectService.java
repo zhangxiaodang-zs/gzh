@@ -76,7 +76,7 @@ public class WxSelectService {
         //创建接收对象
         WebResponse<PaperResponse> web = new WebResponse<>();
         PaperResponse paperResponse = new PaperResponse();
-        tbid = requestData.getParameter("tbid").toString();
+        tbid = requestData.getParameter("tbid");
         //查询这个订单号有没有被查询过
         map.put("tbid",tbid);
         List<Map<String, Object>> lstData = this.wsdDao.tbQuery(map);
@@ -94,8 +94,15 @@ public class WxSelectService {
             String queryResult = weixinApiServiceSoap.queryPaperReport(PtConstant.APP_KEY, token, spam,
                     tbid,
                     "ZW");
+
             if(!"".equals(queryResult)){
-                this.addHistory(queryResult);
+                JSONObject object = JSON.parseObject(queryResult);
+                JSONObject objects = JSON.parseObject(String.valueOf(object.get("data")));
+                if(!"检测完成".equals(objects.get("status"))){
+                    return new SysErrResponse("还未检测完成").toJsonString();
+                }else{
+                    this.addHistory(queryResult);
+                }
             }else {
                 return new SysErrResponse("订单号不存在").toJsonString();
             }
@@ -127,16 +134,16 @@ public class WxSelectService {
             map.put("paperpath", objects.get("url"));
         }
         if(null != objects.get("title") && !"".equals(objects.get("title"))){
-            map.put("paperpath", objects.get("title"));
+            map.put("papertitle", objects.get("title"));
         }
         if(null != objects.get("author") && !"".equals(objects.get("author"))){
-            map.put("paperpath", objects.get("author"));
+            map.put("paperauthor", objects.get("author"));
         }
         if(null != objects.get("time") && !"".equals(objects.get("time"))){
-            map.put("paperpath", objects.get("time"));
+            map.put("papertime", objects.get("time"));
         }
         if(null != objects.get("status") && !"".equals(objects.get("status"))){
-            map.put("paperpath", objects.get("status"));
+            map.put("paperstatus", objects.get("status"));
         }
         map.put("selecid", CommonUtil.getUUid());
         map.put("tbid", tbid);
@@ -157,15 +164,28 @@ public class WxSelectService {
      */
     @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-    public String delHistory(WebRequest<PaperRequest> requestData) {
+    public String delHistory(HttpServletRequest requestData) {
         //批量删除  通过，分割  循环
         int result = 0;
 
         Map<String, String> param = new HashMap<>();
-        param.put("id", requestData.getRequest().getId());
+        param.put("id", requestData.getParameter("id"));
         result = this.wsdDao.delhistory(param);
+
+        // 系统时间戳
+        String spam = Long.toString(System.currentTimeMillis()/1000L);
+        // 获取访问token
+        String token = PtUtil.getPtToken(spam);
+        log.info("token为:{}", token);
+
+        // 调用查询接口
+        WeixinApiService weixinApiService = new WeixinApiService();
+        WeixinApiServiceSoap weixinApiServiceSoap = weixinApiService.getWeixinApiServiceSoap();
+        String queryResult = weixinApiServiceSoap.deleteWeixinPaperInfo(PtConstant.APP_KEY, token, spam,
+                tbid,
+                "ZW");
         if (result <= 0) {
-            return new SysErrResponse("id:"+requestData.getRequest().getId()+" 删除失败，请重新操作！").toJsonString();
+            return new SysErrResponse("id:"+requestData.getParameter("id")+" 删除失败，请重新操作！").toJsonString();
         }
         return new SysResponse().toJsonString();
     }

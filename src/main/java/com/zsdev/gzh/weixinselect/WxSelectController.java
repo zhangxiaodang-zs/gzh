@@ -6,6 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import java.net.URLEncoder;
  * 更新履历： V0.0.1 20200327 门海峰 创建.
  */
 @Slf4j
+@CrossOrigin
 @RestController
 public class WxSelectController {
 
@@ -53,6 +55,12 @@ public class WxSelectController {
      * */
     @RequestMapping("/wxselect")
     public String wxselect(HttpServletRequest requestData, HttpServletResponse response) throws Exception {
+        // 指定允许其他域名访问
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 响应类型
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, DELETE");
+        // 响应头设置
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, X-Custom-Header, HaiYi-Access-Token");
         log.info("web项目查询---------->传入的参数为：{}", requestData);
         return wsdService.queryPaperHistory(requestData);
     }
@@ -72,11 +80,9 @@ public class WxSelectController {
      * 删除
      * */
     @RequestMapping("/delhistory")
-    public String delhistory(@RequestBody String requestData, HttpServletResponse response) throws Exception {
-        WebRequest<PaperRequest> paperRequest = JSON.parseObject(requestData, new TypeReference<WebRequest<PaperRequest>>() {
-        });
+    public String delhistory(HttpServletRequest requestData, HttpServletResponse response) throws Exception {
         log.info("web项目删除---------->传入的参数为：{}", requestData);
-        return wsdService.delHistory(paperRequest);
+        return wsdService.delHistory(requestData);
     }
 
 }

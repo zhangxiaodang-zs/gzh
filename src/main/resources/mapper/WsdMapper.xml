@@ -8,11 +8,11 @@
         q.id as id,
         q.selec_id as selecid,
         q.tb_id as tbid,
-        q.paper_title as papertitle,
-        q.paper_author as paperauthor,
-        q.paper_time as papertime,
-        q.paper_status as paperstatus,
-        q.paper_path as paperpath,
+        q.paper_title as title,
+        q.paper_author as author,
+        q.paper_time as time,
+        q.paper_status as status,
+        q.paper_path as url,
         q.addtime as addtime,
         q.updtime as updtime,
         q.operator as operator
@@ -21,6 +21,7 @@
         WHERE
         1 = 1
             and q.tb_id = #{tbid}
+            and q.paper_status != '已删除'
         <if test="pagingOrNot != null and pagingOrNot != ''">
             LIMIT #{startindex},#{pagesize};
         </if>
@@ -57,6 +58,6 @@
     </insert>
 
     <delete id="delhistory" parameterType="Map">
-        DELETE FROM query_history WHERE id = #{id}
+        DELETE FROM query_history WHERE tb_id = #{tbid}
     </delete>
 </mapper>
