@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="css/aui.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!--头部-->
+<div class="header">
+    <div class="clearfix heade_top">
+        <div class="pull-left">
+            <img src="images/back.png" alt="">
+        </div>
+        <div class="pull-right" id="my_record">我的查询记录</div>
+    </div>
+    <!-- 输入框-->
+    <div class="clearfix search_box">
+        <img src="images/fa.png" alt="">
+        <div class="pull-left">
+            <input type="text" placeholder="请输入订单编号" id="order_number">
+        </div>
+        <div class="pull-right" id="search">查询报告</div>
+    </div>
+</div>
+
+<!--检查报告列表-->
+<div class="container_box" style="margin-top: -0.8rem">
+    <div class="report_list">
+        <div class="title bb-1-em">检测报告列表</div>
+        <ul>
+            <li class="clearfix">
+                <div class="pull-left list_l">论文标题</div>
+                <div class="pull-left list_r">从语素教学角度浅谈对韩汉语词汇 教学</div>
+            </li>
+            <li class="clearfix">
+                <div class="pull-left list_l">论文作者</div>
+                <div class="pull-left list_r">母丹丹</div>
+            </li>
+            <li class="clearfix">
+                <div class="pull-left list_l">检测时间</div>
+                <div class="pull-left list_r">2020-2-26 11:21:39</div>
+            </li>
+            <li class="clearfix">
+                <div class="pull-left list_l">检测状态</div>
+                <div class="pull-left color-468847 list_r">检测完成</div>
+            </li>
+            <li class="clearfix">
+                <div class="pull-left list_l">操作</div>
+                <div class="pull-left" style="margin-left: 1.2rem">
+                    <div class="btn1 pull-left">下载报告</div>
+                    <div class="btn2 pull-left">删除报告</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--下载报告须知-->
+<div class="container_box" style="margin-top: 0.4rem;margin-bottom: 0.6rem">
+    <div class="download_notice">
+        <div class="title bb-1-em">下载报告须知</div>
+        <ul>
+            <li>
+                <div class="list_sort">1</div>
+                <span class="color-428bca">如检测失败</span>：在系统“检测状态”为 <span class="color-d9534f">检测失败</span> 时候，请联系店主。
+            </li>
+            <li>
+                <div class="list_sort">2</div>
+                <span class="color-428bca">报告下载</span>：提交检测后，输入订单编号，需点击红色按钮“查询报告”，才可获取最新检测状态，不要忘记点击查询哦。
+            </li>
+            <li>
+                <div class="list_sort">3</div>
+                <span class="color-428bca">字符限制</span>：高校论文检测系统有字符限制，检测前请按照限制字符要求上传论文。
+            </li>
+            <li>
+                <div class="list_sort">4</div>
+                <span class="color-428bca">合并订单</span>：如果是多篇文章使用的一个订单号检测的，只需要通过这个订单即可查询到所有的检测报告。
+            </li>
+            <li>
+                <div class="list_sort">5</div>
+                <span class="color-428bca">结果为0</span>：如检测结果为0，说明官网检测结果也是0，并非未检测，并非不准。只能说明你的论文在高校检测系统中没有重复的，即使你去高校官网检测也是这个结果。
+            </li>
+            <li>
+                <div class="list_sort">6</div>
+                <span class="color-428bca">是否准确</span>：此使用的系统跟学校的系统是一致，同样的系统，同样的数据库，在提交到学校检测之前，请确保和本系统中检测的文章内容一致，这样才能确保结果一致！使你去高校官网检测也是这个结果。
+            </li>
+            <li>
+                <div class="list_sort">7</div>
+                <span class="color-428bca">删除报告</span>：同学们在报告检测完成后，可以自行删除检测报告，删除后不可恢复，请删除前确认。
+            </li>
+            <li>
+                <div class="list_sort">8</div>
+                <span class="color-428bca">报告打开方式</span>：高校系统报告为网页格式，使用打开方式为浏览器即可打开，如果是PDF格式，则需要下载安装PDF阅读器软件。
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/api.js"></script>
+<script type="text/javascript" src="js/aui-toast.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
