@@ -91,12 +91,12 @@ $("#delhistory").click(function (e) {
     e.preventDefault();
     var del_tbid=localStorage.getItem("tbid");
     console.log(del_tbid)
-    var data={"tbid":del_tbid};
+    var data={tbid:del_tbid};
     $.ajax({
         type: "post",
         async: true, //异步请求
         url: IP_url+"gzh/java/delhistory",
-        data: data,
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (result) {
            // alert("删除成功");
