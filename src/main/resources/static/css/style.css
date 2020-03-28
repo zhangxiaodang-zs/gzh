@@ -1,0 +1,331 @@
+*,html,body{padding: 0;margin: 0;font-family: "MicrosoftYaHei"}
+html{font-size: 100px}
+body{background: #f5f5f5}
+/*清除浮动*/
+.pull-left{float:left;}
+.pull-right{float:right;}
+.clearfix{clear:both;overflow:hidden;}
+
+/*  文本对齐方式  */
+.text-l{text-align:left;}
+.text-r{text-align:right;}
+/*  颜色类  */
+.color-fff{color: #fff}
+.color-468847{color: #468847 !important;}
+.mt-20rem{margin-top: 0.2rem}
+.bb-1-em{border-bottom: 0.01rem solid #ebebeb}
+.color-428bca{color: #428bca !important;}
+.color-d9534f{color: #d9534f !important;}
+/*  头部和查询  */
+.header{
+    width: 100%;
+    height: 3.68rem;
+    background: url("../images/body_bg.png") no-repeat;
+    background-size: 100% 100%;
+}
+.heade_top{
+    height: 1rem;
+    line-height: 1rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+
+}
+.heade_top img{
+    width: 0.24rem;
+    height: 0.36rem;
+    margin-top: 0.25rem;
+}
+
+#my_record{
+    color: #f5f5f5;
+    font-size: 0.2rem;
+}
+.search_box{
+    padding-left: 0.25rem;
+    padding-right: 0.3rem;
+    margin-top: 0.5rem;
+    line-height: 0.72rem;
+    position: relative;
+}
+.search_box img{
+    position: absolute;
+    top: 0.15rem;
+    left: 0.5rem;
+    width: 0.41rem;
+    height: 0.39rem;
+}
+.search_box input{
+    outline-style: none ;
+    border: 1px solid #ccc;
+    /*padding: 13px 14px;*/
+    width: 5.29rem;
+    height: 0.72rem;
+    line-height: 0.72rem;
+    background-color: #f0f1f5;
+    font-size: 14px;
+    border-radius: 0.8rem;
+    padding-left: 0.8rem;
+}
+input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+::-webkit-input-placeholder {
+    color: #c2c2c2;
+}
+.search_box #search{
+    font-size: 0.28rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/*检查报告列表*/
+.container_box{
+    margin: 0 auto;
+    width: 88%;
+    background-color: #ffffff;
+    box-shadow: 0rem 0rem 0.16rem 0rem
+    rgba(0, 0, 0, 0.08);
+    border-radius: 0.16rem;
+   padding: 0rem 0.25rem 0.27rem 0.25rem;
+
+}
+.report_list{
+
+}
+.report_list .title{
+    font-size: 0.32rem;
+    font-weight: bold;
+    color: #212121;
+    height: 0.88rem;
+    line-height: 0.88rem;
+}
+.report_list{
+
+}
+.report_list ul li{
+    border-bottom: 0.01rem solid #ebebeb;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+   list-style: none;
+ }
+.report_list ul li .list_l{
+    font-size: 0.28rem;
+    color: #9e9e9e;
+}
+.report_list ul li .list_r{
+    width: 68%;
+    font-size: 0.28rem;
+    color: #212121;
+    margin-left: 0.8rem;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.btn1{
+    text-align: center;
+    width: 1.64rem;
+    height: 0.48rem;
+    line-height: 0.48rem;
+    background: #5bb75b;
+    font-size: 0.26rem;
+    color: #fff !important;
+    border-radius: 0.2rem;
+}
+.btn1 a,.btn2 a{color: #fff}
+.btn2{
+    text-align: center;
+    width: 1.64rem;
+    height: 0.48rem;
+    line-height: 0.48rem;
+    background: #bd362f;
+    font-size: 0.26rem;
+    color: #fff !important;
+    border-radius: 0.2rem;
+    margin-left: 0.5rem;
+}
+
+
+
+/*下载报告须知*/
+
+.download_notice{
+
+}
+.download_notice .title{
+    font-size: 0.32rem;
+    font-weight: bold;
+    color: #212121;
+    height: 0.88rem;
+    line-height: 0.88rem;
+}
+.download_notice ul li{
+    line-height: 0.4rem;
+    list-style: none;
+    color: #333;
+    padding-top: 0.15rem;
+    font-size: 0.24rem;
+    text-align:justify;
+    text-justify:inter-ideograph;
+}
+
+.list_sort{
+    text-align: center;
+    width: 0.33rem;
+    height: 0.33rem;
+    line-height: 0.33rem;
+    background: #5bb75b;
+    color: #fff;
+    font-size: 0.22rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/*————————————————————查询记录页面——————————————————————————*/
+.record_list_box{
+    margin: 0 auto;
+    width: 90%;
+    background-color: #ffffff;
+    box-shadow: 0rem 0rem 0.16rem 0rem
+    rgba(0, 0, 0, 0.08);
+    border-radius: 0.16rem;
+    padding: 0rem 0.2rem 0.2rem 0.2rem;
+
+}
+.record_list_header{
+    width: 100%;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    background: url("../images/list_header.png") no-repeat;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    position: fixed;
+    top: 0;
+}
+.record_list_header img{
+    width: 0.24rem;
+    height: 0.36rem;
+    position: absolute;
+    top: 0.25rem;
+}
+
+.record_list_header .title{
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    font-size: 0.36rem;
+    font-weight: bold;
+}
+.record_list{
+    margin-top: 1.2rem;
+}
+.record_list ul li{
+    list-style: none;
+    margin-bottom: 0.3rem;
+}
+.record_list ul li .title{
+    font-size: 0.28rem;
+    color: #333;
+    font-weight: bold;
+    padding-top: 0.2rem;
+}
+.record_list ul li .author{
+    font-size: 0.2rem;
+    color: #a4a4a4;
+    padding-top: 0.12rem;
+}
+.record_list ul li .status{
+    font-size: 0.2rem;
+    color: #468847;
+    padding-top: 0.12rem;
+}
+.record_list ul li .time{
+    font-size: 0.2rem;
+    color: #a4a4a4;
+    padding-top: 0.12rem;
+}
+.number{
+    text-align: center;
+    width: 0.45rem;
+    height: 0.61rem;
+    line-height: 0.61rem;
+    background: url("../images/card.png") no-repeat;
+    font-size: 0.26rem;
+    color: #fff;
+    background-size: 100% 100%;
+}
+.report_down{
+    text-align: center;
+    width: 1.25rem;
+    height: 0.46rem;
+    line-height: 0.46rem;
+    border-radius: 0.22rem;
+    border: solid 0.02rem #5bb75b;
+    font-size: 0.2rem;
+    font-weight: bold;
+    font-stretch: normal;
+    color: #5bb75b;
+    margin-top: 0.65rem;
+}
+.report_del{
+    margin-top: 0.2rem;
+    text-align: center;
+    width: 1.25rem;
+    height: 0.46rem;
+    line-height: 0.46rem;
+    border-radius: 0.22rem;
+    border: solid 0.02rem #bd362f;
+    font-size: 0.2rem;
+    font-weight: bold;
+    font-stretch: normal;
+    color: #bd362f;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
