@@ -1,6 +1,7 @@
 var toast = new auiToast();
 /*————————————查询报告接口————————————————*/
-var IP_url="http://127.0.0.1:9000/";
+//var IP_url="http://127.0.0.1:9000/";
+var IP_url="http://www.biye.com.cn/";
 $("#search").click(function (e) {
     e.preventDefault();
     $(".report_list ul").addClass("di-n");
@@ -104,16 +105,16 @@ $("#delhistory").click(function (e) {
         url: IP_url+"gzh/java/delhistory",
         data: JSON.stringify(data),
         success: function (result) {
-            toast.loading({
-                title:"删除成功",
-                duration:2000
-            });
-
             if(result.retcode=='0000'){
                 $(".status_completed").addClass('di-n');
                 $("#status").html("已删除");
+
+                // toast.success({
+                //     title:"删除成功",
+                //     duration:2000
+                // });
             }
-            toast.hide();
+            //toast.hide();
         },
         error: function (errorMsg) {
             alert("报告删除异常,请联系客服!");

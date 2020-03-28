@@ -7,4 +7,5 @@ spring:
     name: gzh
 logging:
   file:
-    name: C:\\gzh.log
+    #name: C:\\gzh.log
+    name: /home/biye/logs/gzh.log
