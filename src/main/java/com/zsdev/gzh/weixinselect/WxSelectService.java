@@ -86,18 +86,23 @@ public class WxSelectService {
             return new SysErrResponse(queryResult.getString("message")).toJsonString();
         } else {
             JSONObject report = (JSONObject) queryResult.get("data");
-            // 标题
-            responseJson.put("title", report.getString("title"));
-            // 作者
-            responseJson.put("author", report.getString("author"));
-            // 上传时间
-            responseJson.put("time", report.getString("time"));
-            // 检测状态
-            responseJson.put("status", report.getString("status"));
-            // 下载地址
-            responseJson.put("url", report.getString("url"));
-            responseJson.put("retcode", "0000");
-            responseJson.put("retmsg", "查询成功");
+            if(report.get("title") != null && !report.get("title").toString().equals("")) {
+                // 标题
+                responseJson.put("title", report.getString("title"));
+                // 作者
+                responseJson.put("author", report.getString("author"));
+                // 上传时间
+                responseJson.put("time", report.getString("time"));
+                // 检测状态
+                responseJson.put("status", report.getString("status"));
+                // 下载地址
+                responseJson.put("url", report.getString("url"));
+                responseJson.put("retcode", "0000");
+                responseJson.put("retmsg", "查询成功");
+            } else {
+                responseJson.put("retcode", "0001");
+                responseJson.put("retmsg", "订单号不存在!");
+            }
         }
 
         // 返回
