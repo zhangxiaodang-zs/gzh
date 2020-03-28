@@ -82,9 +82,20 @@ public class WxSelectService {
                         tbid,
                         "ZW"));
         log.info("订单号[{}]的查询结果为:\n{}", tbid, queryResult);
-        if (!"".equals(queryResult)) {
+        if (!queryResult.getString("status").equals("success")) {
+            return new SysErrResponse(queryResult.getString("message")).toJsonString();
         } else {
-            return new SysErrResponse("订单号不存在").toJsonString();
+            JSONObject report = (JSONObject) queryResult.get("data");
+            // 标题
+            responseJson.put("title", report.getString("title"));
+            // 作者
+            responseJson.put("author", report.getString("author"));
+            // 上传时间
+            responseJson.put("time", report.getString("time"));
+            // 检测状态
+            responseJson.put("status", report.getString("status"));
+            // 下载地址
+            responseJson.put("url", report.getString("url"));
         }
 
         // 返回
