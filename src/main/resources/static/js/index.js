@@ -1,73 +1,74 @@
-$(document).ready(function(){
-});
-
-
+var toast = new auiToast();
 /*————————————查询报告接口————————————————*/
-var IP_url="http://127.0.0.1:9000";
+var IP_url="http://192.168.10.14:9000";
 $("#search").click(function (e) {
     e.preventDefault();
+    toast.loading({
+        title:"加载中"
+    });
     // 订单ID
     var tbid = $("#order_number").val();//获取输入框值
+    console.log(tbid)
+    localStorage.setItem("tbid",tbid);
     var data = {
         tbid: tbid
     };
-    console.log(data);
     $.ajax({
         type: "POST",
         async: true,
         dataType: "json",
-        contentType : "application/json",
+        contentType : "application/octet-stream",
         url: IP_url + "/gzh/java/query",
         data: JSON.stringify(data),
         success: function (result) {
-            $(".report_list ul").html('');
-            var paperlist=result.response.paperlist;
-            if(paperlist){
-                for (var i = 0; i <paperlist.length; i++){
-                    $(".report_list ul").append(
-                        ' <li class="clearfix">'+
-                        '  <div class="pull-left list_l">论文标题</div>'+
-                        '<div class="pull-left list_r">'+paperlist[i].title+'</div>'+
-                        ' </li>'+
-                        ' <li class="clearfix">'+
-                        '  <div class="pull-left list_l">论文作者</div>'+
-                        '<div class="pull-left list_r">'+paperlist[i].author+'</div>'+
-                        ' </li>'+
-                        ' <li class="clearfix">'+
-                        '<div class="pull-left list_l">检测时间</div>'+
-                        '<div class="pull-left list_r">'+paperlist[i].time+'</div>'+
-                        ' </li>'+
-                        ' <li class="clearfix">'+
-                        '<div class="pull-left list_l">检测状态</div>'+
-                        '<div class="pull-left list_r">'+paperlist[i].status+'</div>'+
-                        ' </li>'+
-                        ' <li class="clearfix">'+
-                        ' <div class="pull-left list_l">操作</div>'+
-                        ' <div class="pull-left" style="margin-left: 1.2rem">'+
-                        ' <div class="btn1 pull-left">' +
-                        '<a href="'+paperlist[i].url+'">下载报告</a>'+
-                       // '<a href="'+((paperlist[i].url!=null)?(paperlist[i].url):("#"))+'">下载报告</a>'+
-                        '</div>'+
-                        '<div class="btn2 pull-left" data-id="'+paperlist[i].tbid+'">删除报告</div>'+
-                        '</div>'+
-                        ' </li>'
-                    )
+            toast.hide();
+            $(".report_list ul").removeClass("di-n");
+            $(".report_list .report_have").addClass("di-n");
+            if(result.retcode='0000'){
+                $("#title").html(result.title);
+                $("#author").html(result.author);
+                $("#time").html(result.time);
+                $("#status").html(result.status);
+               // $("#down a").attr("href",result.url)
+                if(result.status=="检测完成"){
+                    $(".status_completed").removeClass("di-n");//检测完成按钮显示
+                }else{
+                    $(".status_completed").addClass("di-n")
                 }
+
+            }else{
+                $(".report_list .report_have").removeClass("di-n");
             }
+            //点击下载
+            //判断苹果还是按钮
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            $("#down a").click(function (e) {
+                e.preventDefault();
+                if(isiOS){
+                    alert("苹果手机请登录电脑端进行下载！")
+                    return false;
+                }else if(isAndroid){
+                    window.location.href=result.url;
+                }
+
+            })
 
         },
         error: function (errorMsg) {
+            toast.hide();
             console.log("未成功"+JSON.stringify(errorMsg))
         }
     });
 })
 
-
 //删除报告
-$('.report_list ul').on('click', '.btn2', function (e) {
+$("#delhistory").click(function (e) {
     e.preventDefault();
-    var data={"tbid":$(this).attr('data-id')};
-    console.log(data)
+    var del_tbid=localStorage.getItem("tbid");
+    console.log(del_tbid)
+    var data={"tbid":del_tbid};
     $.ajax({
         type: "post",
         async: true, //异步请求
@@ -75,14 +76,19 @@ $('.report_list ul').on('click', '.btn2', function (e) {
         data: data,
         dataType: "json",
         success: function (result) {
-            alert("删除成功");
+           // alert("删除成功");
+            toast.custom({
+                title:"删除成功",
+                html:'<i class="aui-iconfont aui-icon-laud"></i>',
+                duration:2000
+            });
             window.location.reload();
         },
         error: function (errorMsg) {
 
         }
     });
-});
+})
 
 
 

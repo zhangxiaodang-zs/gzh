@@ -5,7 +5,7 @@ body{background: #f5f5f5}
 .pull-left{float:left;}
 .pull-right{float:right;}
 .clearfix{clear:both;overflow:hidden;}
-
+.di-n{display: none}
 /*  文本对齐方式  */
 .text-l{text-align:left;}
 .text-r{text-align:right;}
@@ -41,16 +41,16 @@ body{background: #f5f5f5}
     font-size: 0.2rem;
 }
 .search_box{
-    padding-left: 0.25rem;
-    padding-right: 0.3rem;
+    margin: 0 auto;
     margin-top: 0.5rem;
     line-height: 0.72rem;
     position: relative;
+    width: 88%;
 }
 .search_box img{
     position: absolute;
     top: 0.15rem;
-    left: 0.5rem;
+    left: 0.25rem;
     width: 0.41rem;
     height: 0.39rem;
 }
@@ -58,7 +58,7 @@ body{background: #f5f5f5}
     outline-style: none ;
     border: 1px solid #ccc;
     /*padding: 13px 14px;*/
-    width: 5.29rem;
+    width: 5rem;
     height: 0.72rem;
     line-height: 0.72rem;
     background-color: #f0f1f5;
@@ -79,6 +79,7 @@ input:focus{
     font-size: 0.28rem;
     font-weight: bold;
     color: #fff;
+    margin-right: 10px;
 }
 
 /*检查报告列表*/
@@ -94,6 +95,11 @@ input:focus{
 }
 .report_list{
 
+}
+.report_list p{
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
 }
 .report_list .title{
     font-size: 0.32rem;
@@ -283,8 +289,41 @@ input:focus{
     color: #bd362f;
 }
 
-
-
+/*遮罩样式*/
+.aui-toast {
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    border-radius: 0.25rem;
+    color: #ffffff;
+    position: fixed;
+    z-index: 3;
+    top: 45%;
+    left: 50%;
+    width: 2em !important;
+    min-height: 2em !important;
+    margin-left: -1em !important;
+    margin-top: -2rem !important;
+    display: none;
+}
+.aui-toast-loading {
+    background-color: #ffffff;
+    border-radius: 100%;
+    margin: 0.15rem 0 !important;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 2px solid #ffffff;
+    border-bottom-color: transparent;
+    height: 0.6rem !important;
+    width: 0.6rem !important;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: rotate 1s 0s linear infinite;
+    animation: rotate 1s 0s linear infinite;
+}
+.aui-toast-content {
+    margin: 0 0 0.25rem !important;
+    font-size: 14px !important;
+}
 
 
 
