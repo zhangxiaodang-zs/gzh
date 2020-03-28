@@ -96,6 +96,8 @@ public class WxSelectService {
             responseJson.put("status", report.getString("status"));
             // 下载地址
             responseJson.put("url", report.getString("url"));
+            responseJson.put("retcode", "0000");
+            responseJson.put("retmsg", "查询成功");
         }
 
         // 返回
