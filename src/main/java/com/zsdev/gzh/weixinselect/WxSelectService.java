@@ -132,12 +132,12 @@ public class WxSelectService {
                         spam,
                         tbid,
                         "ZW"));
-        if ("error".equals(queryResult.get("status"))) {
-            responseJson.put("retcode", "9999");
-            responseJson.put("retmsg", "删除失败");
-        }else{
+        if ("success".equals(queryResult.get("status"))) {
             responseJson.put("retcode", "0000");
             responseJson.put("retmsg", "删除成功");
+        }else{
+            responseJson.put("retcode", "9999");
+            responseJson.put("retmsg", "删除失败");
         }
         return responseJson.toJSONString();
     }
