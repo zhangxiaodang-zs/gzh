@@ -99,9 +99,8 @@ $("#delhistory").click(function (e) {
         url: IP_url+"gzh/java/delhistory",
         data: JSON.stringify(data),
         success: function (result) {
-            toast.custom({
+            toast.success({
                 title:"删除成功",
-               // html:'<i class="aui-iconfont aui-icon-laud"></i>',
                 duration:2000
             });
             if(result.retcode=='0000'){
