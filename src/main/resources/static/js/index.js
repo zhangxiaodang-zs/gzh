@@ -3,6 +3,7 @@ var toast = new auiToast();
 var IP_url="http://192.168.10.14:9000";
 $("#search").click(function (e) {
     e.preventDefault();
+    $(".report_list ul").addClass("di-n");
     toast.loading({
         title:"加载中"
     });
@@ -21,23 +22,25 @@ $("#search").click(function (e) {
         url: IP_url + "/gzh/java/query",
         data: JSON.stringify(data),
         success: function (result) {
-            toast.hide();
-            $(".report_list ul").removeClass("di-n");
-            $(".report_list .report_have").addClass("di-n");
-            if(result.retcode='0000'){
+            if(result.retcode=='0000'){
+                console.log("请求成功")
+                $(".report_list ul").removeClass("di-n");
+                $(".report_list .report_have").addClass("di-n");
                 $("#title").html(result.title);
                 $("#author").html(result.author);
                 $("#time").html(result.time);
                 $("#status").html(result.status);
-               // $("#down a").attr("href",result.url)
                 if(result.status=="检测完成"){
                     $(".status_completed").removeClass("di-n");//检测完成按钮显示
                 }else{
                     $(".status_completed").addClass("di-n")
                 }
 
+            }else if(result.retcode=='0001'){
+                $(".report_list .report_have").html(result.retmsg)
+
             }else{
-                $(".report_list .report_have").removeClass("di-n");
+                $(".report_list .report_have").html("其他异常，请联系客服!")
             }
             //判断电脑还是手机
             function IsPC() {
@@ -74,7 +77,7 @@ $("#search").click(function (e) {
 
 
             })
-
+            toast.hide();
         },
         error: function (errorMsg) {
             toast.hide();
@@ -102,7 +105,12 @@ $("#delhistory").click(function (e) {
                 html:'<i class="aui-iconfont aui-icon-laud"></i>',
                 duration:2000
             });
-            window.location.reload();
+            if(result.retcode=='0000'){
+                $(".status_completed").addClass('di-n');
+                $("#status").html("已删除");
+
+            }
+
         },
         error: function (errorMsg) {
 
