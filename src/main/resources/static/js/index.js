@@ -39,19 +39,39 @@ $("#search").click(function (e) {
             }else{
                 $(".report_list .report_have").removeClass("di-n");
             }
-            //点击下载
-            //判断苹果还是按钮
+            //判断电脑还是手机
+            function IsPC() {
+                var userAgentInfo = navigator.userAgent;
+                var Agents = ["Android", "iPhone",
+                    "SymbianOS", "Windows Phone",
+                    "iPad", "iPod"];
+                var flag = true;
+                for (var v = 0; v < Agents.length; v++) {
+                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                return flag;
+            }
+            //判断苹果还是安卓
             var u = navigator.userAgent;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
             var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             $("#down a").click(function (e) {
                 e.preventDefault();
-                if(isiOS){
-                    alert("苹果手机请登录电脑端进行下载！")
-                    return false;
-                }else if(isAndroid){
+                if(IsPC()){
                     window.location.href=result.url;
+                }else{
+                    if(isiOS){
+                        alert("苹果手机请登录电脑端进行下载！")
+                        return false;
+                    }else if(isAndroid){
+                        window.location.href=result.url;
+                    }
                 }
+
+
 
             })
 
