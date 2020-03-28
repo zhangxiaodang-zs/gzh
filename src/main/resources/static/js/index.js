@@ -9,6 +9,11 @@ $("#search").click(function (e) {
     });
     // 订单ID
     var tbid = $("#order_number").val();//获取输入框值
+    if(!tbid){
+        $(".report_list .report_have").html("请先输入订单号!");
+        toast.hide();
+        return false;
+    }
     console.log(tbid)
     localStorage.setItem("tbid",tbid);
     var data = {
