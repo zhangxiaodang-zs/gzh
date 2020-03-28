@@ -99,14 +99,16 @@ $("#delhistory").click(function (e) {
         url: IP_url+"gzh/java/delhistory",
         data: JSON.stringify(data),
         success: function (result) {
-            toast.success({
+            toast.loading({
                 title:"删除成功",
                 duration:2000
             });
+
             if(result.retcode=='0000'){
                 $(".status_completed").addClass('di-n');
                 $("#status").html("已删除");
             }
+            toast.hide();
         },
         error: function (errorMsg) {
             alert("报告删除异常,请联系客服!");
