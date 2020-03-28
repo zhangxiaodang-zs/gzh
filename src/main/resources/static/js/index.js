@@ -101,7 +101,7 @@ $("#delhistory").click(function (e) {
         success: function (result) {
             toast.custom({
                 title:"删除成功",
-                html:'<i class="aui-iconfont aui-icon-laud"></i>',
+               // html:'<i class="aui-iconfont aui-icon-laud"></i>',
                 duration:2000
             });
             if(result.retcode=='0000'){
