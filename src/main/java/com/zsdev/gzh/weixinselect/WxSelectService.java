@@ -127,17 +127,17 @@ public class WxSelectService {
         // 获取访问token
         String token = PtUtil.getPtToken(spam);
         log.info("token为:{}", token);
-        // 调用查询接口
+        // 调用删除接口
         WeixinApiService weixinApiService = new WeixinApiService();
         WeixinApiServiceSoap weixinApiServiceSoap = weixinApiService.getWeixinApiServiceSoap();
-        JSONObject queryResult = JSON.parseObject(
+        JSONObject deleteResult = JSON.parseObject(
                 weixinApiServiceSoap.deleteWeixinPaperInfo(
                         PtConstant.APP_KEY,
                         token,
                         spam,
                         tbid,
                         "ZW"));
-        if ("success".equals(queryResult.get("status"))) {
+        if ("success".equals(deleteResult.get("status"))) {
             responseJson.put("retcode", "0000");
             responseJson.put("retmsg", "报告删除成功.");
         }else{
