@@ -139,10 +139,10 @@ public class WxSelectService {
                         "ZW"));
         if ("success".equals(queryResult.get("status"))) {
             responseJson.put("retcode", "0000");
-            responseJson.put("retmsg", "删除成功");
+            responseJson.put("retmsg", "报告删除成功.");
         }else{
             responseJson.put("retcode", "9999");
-            responseJson.put("retmsg", "删除失败");
+            responseJson.put("retmsg", "报告删除失败,请联系客服.");
         }
         return responseJson.toJSONString();
     }

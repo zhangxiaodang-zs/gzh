@@ -58,7 +58,7 @@ public class WxSelectController {
             log.error("查询报告时异常..........");
             JSONObject json = new JSONObject();
             json.put("retcode", "9999");
-            json.put("retmsg", "查询异常,请联系客服!");
+            json.put("retmsg", "报告查询异常,请联系客服!");
             return json.toJSONString();
         }
     }
@@ -76,7 +76,7 @@ public class WxSelectController {
             log.error("删除报告时异常..........");
             JSONObject json = new JSONObject();
             json.put("retcode", "9999");
-            json.put("retmsg", "删除异常,请联系客服!");
+            json.put("retmsg", "报告删除异常,请联系客服!");
             return json.toJSONString();
         }
     }
