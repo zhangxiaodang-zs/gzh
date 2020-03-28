@@ -4,17 +4,7 @@ server:
     context-path: /gzh/java
 spring:
   application:
-    name: gratu-mini
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.105.140.239:3306/zs?allowMultiQueries=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=UTC
-    username: zsdev
-    password: 0gCNRrQkdDvYVbVi
-mybatis:
-  mapper-locations: classpath*:mapper/*.xml
-  configuration:
-    call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    name: gzh
 logging:
   file:
     name: C:\\gzh.log
