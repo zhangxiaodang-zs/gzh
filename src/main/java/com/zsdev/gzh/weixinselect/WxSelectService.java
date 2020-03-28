@@ -115,14 +115,35 @@ public class WxSelectService {
      *
      * @return Json字符串数据
      */
-    public String delHistory(WebRequest<PaperRequest> requestData) {
+    public String delHistory(String requestData) {
         int result = 0;
-
-        Map<String, String> param = new HashMap<>();
-        param.put("id", requestData.getRequest().getId());
-        if (result <= 0) {
-            return new SysErrResponse("id:" + requestData.getRequest().getId() + " 删除失败，请重新操作！").toJsonString();
+        // 传入参数
+        JSONObject requestJson = JSONObject.parseObject(requestData);
+        // 返回值
+        JSONObject responseJson = new JSONObject();
+        String tbid = requestJson.getString("tbid").toString();
+        // 系统时间戳
+        String spam = Long.toString(System.currentTimeMillis() / 1000L);
+        // 获取访问token
+        String token = PtUtil.getPtToken(spam);
+        log.info("token为:{}", token);
+        // 调用查询接口
+        WeixinApiService weixinApiService = new WeixinApiService();
+        WeixinApiServiceSoap weixinApiServiceSoap = weixinApiService.getWeixinApiServiceSoap();
+        JSONObject queryResult = JSON.parseObject(
+                weixinApiServiceSoap.deleteWeixinPaperInfo(
+                        PtConstant.APP_KEY,
+                        token,
+                        spam,
+                        tbid,
+                        "ZW"));
+        if ("error".equals(queryResult.get("status"))) {
+            responseJson.put("retcode", "9999");
+            responseJson.put("retmsg", "删除失败");
+        }else{
+            responseJson.put("retcode", "0000");
+            responseJson.put("retmsg", "删除成功");
         }
-        return new SysResponse().toJsonString();
+        return responseJson.toJSONString();
     }
 }

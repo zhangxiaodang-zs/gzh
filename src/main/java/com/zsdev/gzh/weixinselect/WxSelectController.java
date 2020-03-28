@@ -67,11 +67,18 @@ public class WxSelectController {
      * 删除
      */
     @RequestMapping("/delhistory")
-    public String delhistory(@RequestBody String requestData, HttpServletResponse response) throws Exception {
-        WebRequest<PaperRequest> paperRequest = JSON.parseObject(requestData, new TypeReference<WebRequest<PaperRequest>>() {
-        });
-        log.info("web项目删除---------->传入的参数为：{}", requestData);
-        return wsdService.delHistory(paperRequest);
+    @ResponseBody
+    public String delhistory(@RequestBody String requestData){
+        try {
+            log.info("报告删除---------->传入的参数为：{}", requestData);
+            return wsdService.delHistory(requestData);
+        } catch (Exception e) {
+            log.error("删除报告时异常..........");
+            JSONObject json = new JSONObject();
+            json.put("retcode", "9999");
+            json.put("retmsg", "删除异常,请联系客服!");
+            return json.toJSONString();
+        }
     }
 
 }
