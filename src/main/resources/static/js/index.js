@@ -2,8 +2,8 @@ var toast = new auiToast();
 var dialog = new auiDialog({})
 
 /*————————————查询报告接口————————————————*/
-var IP_url="http://127.0.0.1:9000/";
-//var IP_url="http://www.biye.com.cn/";
+//var IP_url="http://127.0.0.1:9000/";
+var IP_url="http://www.biye.com.cn/";
 $("#search").click(function (e) {
     e.preventDefault();
     $(".report_list ul").addClass("di-n");
@@ -75,12 +75,12 @@ $("#search").click(function (e) {
                     window.location.href=result.url;
                 }else{
                     if(isiOS){
-                        //alert("因苹果保护隐私请登录网页去下载！");
-                        dialog.alert({
-                            title:'',
-                            msg: '因苹果保护隐私请登录网页去下载！',
-                            buttons: ['确定']
-                        });
+                        alert("因苹果保护隐私请登录网页去下载！");
+                        // dialog.alert({
+                        //     title:'',
+                        //     msg: '因苹果保护隐私请登录网页去下载！',
+                        //     buttons: ['确定']
+                        // });
                         return false;
                     }else if(isAndroid){
                         window.location.href=result.url;
@@ -96,6 +96,14 @@ $("#search").click(function (e) {
     });
 });
 
+window.alert = function(name){
+    var iframe = document.createElement("IFRAME");
+    iframe.style.display="none";
+    iframe.setAttribute("src", 'data:text/plain');
+    document.documentElement.appendChild(iframe);
+    window.frames[0].window.alert(name);
+    iframe.parentNode.removeChild(iframe);
+};
 
 Window.prototype.alert = function(){
     //创建一个大盒子
