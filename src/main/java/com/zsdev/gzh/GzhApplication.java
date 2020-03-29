@@ -3,11 +3,13 @@ package com.zsdev.gzh;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
 
 @Slf4j
+@CrossOrigin(origins = "*")
 @SpringBootApplication
 public class GzhApplication {
 
