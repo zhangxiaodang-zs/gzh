@@ -1,7 +1,9 @@
 var toast = new auiToast();
+var dialog = new auiDialog({})
+
 /*————————————查询报告接口————————————————*/
-//var IP_url="http://127.0.0.1:9000/";
-var IP_url="http://www.biye.com.cn/";
+var IP_url="http://127.0.0.1:9000/";
+//var IP_url="http://www.biye.com.cn/";
 $("#search").click(function (e) {
     e.preventDefault();
     $(".report_list ul").addClass("di-n");
@@ -15,7 +17,7 @@ $("#search").click(function (e) {
         toast.hide();
         return false;
     }
-    console.log(tbid)
+    console.log(tbid);
     localStorage.setItem("tbid",tbid);
     var data = {
         tbid: tbid
@@ -73,7 +75,12 @@ $("#search").click(function (e) {
                     window.location.href=result.url;
                 }else{
                     if(isiOS){
-                        alert("苹果手机请登录电脑端进行下载！");
+                        //alert("因苹果保护隐私请登录网页去下载！");
+                        dialog.alert({
+                            title:'',
+                            msg: '因苹果保护隐私请登录网页去下载！',
+                            buttons: ['确定']
+                        });
                         return false;
                     }else if(isAndroid){
                         window.location.href=result.url;
@@ -87,7 +94,62 @@ $("#search").click(function (e) {
             console.log("未成功"+JSON.stringify(errorMsg));
         }
     });
-})
+});
+
+
+Window.prototype.alert = function(){
+    //创建一个大盒子
+    var box = document.createElement("div");
+    //创建一个关闭按钮
+    var button = document.createElement("button");
+    //定义一个对象保存样式
+    var boxName = {
+        width:"500px",
+        height:"180px",
+        backgroundColor:"#f8f8f8",
+        border:"1px solid #ccc",
+        position:"absolute",
+        top:"50%",
+        left:"50%",
+        margin:"-90px 0 0 -250px",
+        zIndex:"999",
+        textAlign:"center",
+        lineHeight:"180px"
+    }
+    //给元素添加元素
+    for(var k in boxName){
+        box.style[k] = boxName[k];
+    }
+    //把创建的元素添加到body中
+    document.body.appendChild(box);
+    //把alert传入的内容添加到box中
+    if(arguments[0]){
+        box.innerHTML = arguments[0];
+    }
+    button.innerHTML = "关闭";
+    //定义按钮样式
+    var btnName = {
+        border:"1px solid #ccc",
+        backgroundColor:"#fff",
+        width:"70px",
+        height:"30px",
+        textAlign:"center",
+        lineHeight:"30px",
+        outline:"none",
+        position:"absolute",
+        bottom:"10px",
+        right:"20px",
+    };
+    for(var j in btnName){
+        button.style[j] = btnName[j];
+    }
+    //把按钮添加到box中
+    box.appendChild(button);
+    //给按钮添加单击事件
+    button.addEventListener("click",function(){
+        box.style.display = "none";
+    })
+};
 
 //删除报告
 $("#delhistory").click(function (e) {
