@@ -46,7 +46,8 @@
                             if(params.input){
                                 callback({
                                     buttonIndex: parseInt(this.getAttribute("button-index"))+1,
-                                    text: document.querySelector("input").value
+                                    //text: document.querySelector("input").value
+                                    text: document.querySelector(".aui-dialog-body input").value
                                 });
                             }else{
                                 callback({

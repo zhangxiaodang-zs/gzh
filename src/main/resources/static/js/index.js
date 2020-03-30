@@ -2,8 +2,8 @@ var toast = new auiToast();
 var dialog = new auiDialog({})
 
 /*————————————查询报告接口————————————————*/
-//var IP_url="http://127.0.0.1:9000/";
-var IP_url="http://www.biye.com.cn/";
+var IP_url="http://127.0.0.1:9000/";
+//var IP_url="http://www.biye.com.cn/";
 $("#search").click(function (e) {
     e.preventDefault();
     $(".report_list ul").addClass("di-n");
@@ -31,13 +31,13 @@ $("#search").click(function (e) {
         data: JSON.stringify(data),
         success: function (result) {
             if(result.retcode=='0000'){
-                console.log("请求成功")
                 $(".report_list ul").removeClass("di-n");
                 $(".report_list .report_have").addClass("di-n");
                 $("#title").html(result.title);
                 $("#author").html(result.author);
                 $("#time").html(result.time);
                 $("#status").html(result.status);
+                $("#down a").attr("href",result.url);
                 if(result.status == "检测完成"){
                     //检测完成按钮显示
                     $(".status_completed").removeClass("di-n");
@@ -75,13 +75,9 @@ $("#search").click(function (e) {
                     window.location.href=result.url;
                 }else{
                     if(isiOS){
-                        alert("因苹果保护隐私请登录网页去下载！");
-                        // dialog.alert({
-                        //     title:'',
-                        //     msg: '因苹果保护隐私请登录网页去下载！',
-                        //     buttons: ['确定']
-                        // });
-                        return false;
+                       // alert("因苹果保护隐私请登录网页去下载！");
+                        send_mailbox();//发送到邮箱
+
                     }else if(isAndroid){
                         window.location.href=result.url;
                     }
@@ -95,6 +91,73 @@ $("#search").click(function (e) {
         }
     });
 });
+
+//发送到邮箱
+function send_mailbox(){
+    var title=$("#title").html();
+    var author=$("#author").html();
+    var time=$("#time").html();
+    var status=$("#status").html();
+    var url=$("#down a").attr("href");
+    dialog.prompt({
+        title:"发送到邮箱",
+        msg:'这里是内容',
+        input:true, //是否有input输入框
+        buttons:['取消','确定']
+    },function(ret){
+        if(ret.buttonIndex==2){
+            //正则判断邮箱是否正确
+             if(!checkEmail(ret.text)){
+                 dialog.alert({
+                     title:"提示",
+                     msg: "请输入正确的邮箱地址",
+                     buttons:['确定']
+                 });
+                  return false;
+             }
+
+            var data = {
+                "title":title,
+                "author":author,
+                "time":time,
+                "status":status,
+                "url":url,
+                "email":ret.text
+            }
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: "json",
+                contentType : "application/json",
+                url: "http://192.168.10.29:9000/gzh/java/email",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    dialog.alert({
+                        title:"提示",
+                        msg: "发送成功,请前往邮箱查看",
+                        buttons:['确定']
+                    });
+                },
+                error: function (errorMsg) {
+                    alert("异常，请重新发送！");
+                }
+            });
+        }
+
+    })
+}
+
+
+
+function checkEmail(str){
+    var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+    if(re.test(str)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 
 window.alert = function(name){
     var iframe = document.createElement("IFRAME");
