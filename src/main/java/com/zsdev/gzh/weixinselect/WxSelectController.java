@@ -7,10 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Copyright(C) ShanDongzhisheng 2019.
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WxSelectController {
 
     @Autowired
-    private WxSelectService wsdService;
+    private WxSelectService wxSelectService;
 
     @RequestMapping("/index")
     public String wxcxindex(HttpServletRequest request, Model model) throws Exception {
@@ -53,7 +55,7 @@ public class WxSelectController {
 
         try {
             log.info("报告查询---------->传入的参数为：{}", requestData);
-            return wsdService.queryReport(requestData);
+            return wxSelectService.queryReport(requestData);
         } catch (Exception e) {
             log.error("查询报告时异常..........");
             JSONObject json = new JSONObject();
@@ -68,10 +70,10 @@ public class WxSelectController {
      */
     @RequestMapping("/delhistory")
     @ResponseBody
-    public String delhistory(@RequestBody String requestData){
+    public String delhistory(@RequestBody String requestData) {
         try {
             log.info("报告删除---------->传入的参数为：{}", requestData);
-            return wsdService.delHistory(requestData);
+            return wxSelectService.delHistory(requestData);
         } catch (Exception e) {
             log.error("删除报告时异常..........");
             JSONObject json = new JSONObject();
@@ -81,4 +83,24 @@ public class WxSelectController {
         }
     }
 
+    /**
+     * iphone时发送邮件.
+     */
+    @RequestMapping("/email")
+    @ResponseBody
+    public String sendMail(@RequestBody String requestData) {
+
+        try {
+            log.info("iphone发送邮件接收到的参数为：{}", requestData);
+            PaperRequest requestJSON = JSON.parseObject(requestData, new TypeReference<PaperRequest>() {
+            });
+            return this.wxSelectService.sendMailService(requestJSON);
+        } catch (Exception ex) {
+            log.error("发送邮件时异常：\n{}", ex.getMessage());
+            JSONObject response = new JSONObject();
+            response.put("retcode", "9999");
+            response.put("retmsg", "邮件发送异常,请联系管理员!");
+            return response.toJSONString();
+        }
+    }
 }

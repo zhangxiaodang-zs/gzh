@@ -12,8 +12,14 @@ import com.zsdev.gzh.weixin.WeixinConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * Copyright(C) ShanDongzhisheng 2019.
@@ -86,7 +92,7 @@ public class WxSelectService {
             return new SysErrResponse(queryResult.getString("message")).toJsonString();
         } else {
             JSONObject report = (JSONObject) queryResult.get("data");
-            if(report.get("title") != null && !report.get("title").toString().equals("")) {
+            if (report.get("title") != null && !report.get("title").toString().equals("")) {
                 // 标题
                 responseJson.put("title", report.getString("title"));
                 // 作者
@@ -140,10 +146,88 @@ public class WxSelectService {
         if ("success".equals(deleteResult.get("status"))) {
             responseJson.put("retcode", "0000");
             responseJson.put("retmsg", "报告删除成功.");
-        }else{
+        } else {
             responseJson.put("retcode", "9999");
             responseJson.put("retmsg", "报告删除失败,请联系客服.");
         }
         return responseJson.toJSONString();
+    }
+
+    /**
+     * 发送邮件.
+     */
+    public String sendMailService(PaperRequest requestData) throws Exception {
+
+        String myEmailAccount = "cnki_vip@163.com";
+        String myEmailPassword = "YDRAXVIYNDYUJSEQ";
+        String subject = "欢迎使用学术不端文献检测系统,检测已完成";
+
+        Properties props = new Properties();
+        props.setProperty("mail.transport.protocol", "smtp");
+        props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.auth", "true");
+        String smtpPort = "465";
+        props.setProperty("mail.smtp.port", smtpPort);
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.socketFactory.port", smtpPort);
+
+        Session session = Session.getDefaultInstance(props);
+        session.setDebug(true);
+
+        // 创建一封邮件
+        MimeMessage message = createMimeMessage(session, myEmailAccount, subject, requestData);
+
+        Transport transport = session.getTransport();
+        transport.connect(myEmailAccount, myEmailPassword);
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();
+
+        JSONObject responseData = new JSONObject();
+        responseData.put("retcode", "0000");
+        responseData.put("retmsg", "邮件发送成功!");
+
+        return responseData.toJSONString();
+    }
+
+    private static MimeMessage createMimeMessage(Session session, String sendMail, String subject, PaperRequest requestData) throws Exception {
+        // 1. 创建一封邮件
+        MimeMessage message = new MimeMessage(session);
+
+        // 2. From: 发件人（昵称有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改昵称）
+        message.setFrom(new InternetAddress(sendMail, subject, "UTF-8"));
+
+        // 3. To: 收件人（可以增加多个收件人、抄送、密送）
+        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(requestData.getEmail(), "微信昵称", "UTF-8"));
+
+        // 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）
+        message.setSubject(subject, "UTF-8");
+
+        // 5. Content: 邮件正文（可以使用html标签）（内容有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改发送内容）
+        //message.setContent("XXXXXXXXXXXX", "text/html;charset=UTF-8");
+
+        StringBuffer msgText = new StringBuffer();
+        msgText.append("论文标题：" + requestData.getTitle() + "<br>");
+        msgText.append("论文作者：" + requestData.getAuthor() + "<br>");
+        msgText.append("检测时间：" + requestData.getTime() + "<br>");
+        msgText.append("检测状态：" + requestData.getStatus() + "<br>");
+        msgText.append("<a href=\"" + requestData.getUrl() + "\">下载报告</a>");
+
+        MimeBodyPart text = new MimeBodyPart();
+        text.setContent(msgText.toString(), "text/html;charset=UTF-8");
+
+        MimeMultipart mm = new MimeMultipart();
+        mm.addBodyPart(text);
+        mm.setSubType("mixed");
+
+        message.setContent(mm);
+
+        // 6. 设置发件时间
+        message.setSentDate(new Date());
+
+        // 7. 保存设置
+        message.saveChanges();
+
+        return message;
     }
 }
