@@ -99,7 +99,7 @@ function send_mailbox(){
     var time=$("#time").html();
     var status=$("#status").html();
     var url=$("#down a").attr("href");
-    dialog.prompt({
+    dialog.alert({
         title:"发送到邮箱",
         msg:'这里是内容',
         input:true, //是否有input输入框
@@ -108,14 +108,10 @@ function send_mailbox(){
         if(ret.buttonIndex==2){
             //正则判断邮箱是否正确
              if(!checkEmail(ret.text)){
-                 dialog.alert({
-                     title:"提示",
-                     msg: "请输入正确的邮箱地址",
-                     buttons:['确定']
-                 });
+                  alert("请输入正确的邮箱地址");
                   return false;
              }
-
+            dialog.close();
             var data = {
                 "title":title,
                 "author":author,
@@ -124,29 +120,40 @@ function send_mailbox(){
                 "url":url,
                 "email":ret.text
             }
+            toast.loading({
+                title:"发送中……"
+            });
             $.ajax({
                 type: "POST",
                 async: true,
                 dataType: "json",
                 contentType : "application/json",
-                url: "http://192.168.10.29:9000/gzh/java/email",
+                url: IP_url+"/gzh/java/email",
                 data: JSON.stringify(data),
                 success: function (result) {
-                    dialog.alert({
-                        title:"提示",
-                        msg: "发送成功,请前往邮箱查看",
-                        buttons:['确定']
-                    });
+                    if(result.retcode=='0000'){
+                        dialog.alert({
+                            title:"提示",
+                            msg: "发送成功,请前往邮箱查看",
+                            buttons:['确定']
+                        });
+                    }else{
+                        dialog.alert({
+                            title:"提示",
+                            msg: result.retmsg,
+                            buttons:['确定']
+                        });
+                    }
+                    toast.hide();
                 },
                 error: function (errorMsg) {
-                    alert("异常，请重新发送！");
+                    alert(errorMsg);
                 }
             });
         }
 
     })
 }
-
 
 
 function checkEmail(str){

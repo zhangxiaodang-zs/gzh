@@ -39,6 +39,8 @@
             document.body.insertAdjacentHTML('beforeend', dialogHtml);
             // listen buttons click
             var dialogButtons = document.querySelectorAll(".aui-dialog-btn");
+            var dialogButtons1 = document.querySelector("[button-index]");
+
             if(dialogButtons && dialogButtons.length > 0){
                 for(var ii = 0; ii < dialogButtons.length; ii++){
                     dialogButtons[ii].onclick = function(){
@@ -55,9 +57,13 @@
                                 });
                             }
                         };
-                        self.close();
+
+                       // self.close();
                         return;
                     }
+                }
+                dialogButtons1.onclick = function(){
+                    self.close();
                 }
             }
             self.open();
