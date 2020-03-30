@@ -198,7 +198,7 @@ public class WxSelectService {
         message.setFrom(new InternetAddress(sendMail, subject, "UTF-8"));
 
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
-        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(requestData.getEmail(), "微信昵称", "UTF-8"));
+        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(requestData.getEmail(), "", "UTF-8"));
 
         // 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）
         message.setSubject(subject, "UTF-8");
