@@ -158,13 +158,13 @@ public class WxSelectService {
      */
     public String sendMailService(PaperRequest requestData) throws Exception {
 
-        String myEmailAccount = "cnki_vip@163.com";
-        String myEmailPassword = "YDRAXVIYNDYUJSEQ";
+        String myEmailAccount = "cnki@gramtu.com";
+        String myEmailPassword = "Zqy17859";
         String subject = "欢迎使用学术不端文献检测系统,检测已完成";
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
-        props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.host", "smtp.exmail.qq.com");
         props.setProperty("mail.smtp.auth", "true");
         String smtpPort = "465";
         props.setProperty("mail.smtp.port", smtpPort);

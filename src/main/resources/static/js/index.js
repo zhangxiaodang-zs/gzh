@@ -2,8 +2,8 @@ var toast = new auiToast();
 var dialog = new auiDialog({})
 
 /*————————————查询报告接口————————————————*/
-var IP_url="http://127.0.0.1:9000/";
-//var IP_url="http://www.biye.com.cn/";
+//var IP_url="http://127.0.0.1:9000/";
+var IP_url="http://www.biye.com.cn/";
 $("#search").click(function (e) {
     e.preventDefault();
     $(".report_list ul").addClass("di-n");
@@ -36,7 +36,11 @@ $("#search").click(function (e) {
                 $("#title").html(result.title);
                 $("#author").html(result.author);
                 $("#time").html(result.time);
-                $("#status").html(result.status);
+                if(result.status == "等待检测中") {
+                    $("#status").html("正在检测中");
+                } else {
+                    $("#status").html(result.status);
+                }
                 $("#down a").attr("href",result.url);
                 if(result.status == "检测完成"){
                     //检测完成按钮显示
